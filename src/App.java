@@ -24,9 +24,14 @@ public class App {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-        
+
         funcionarios.forEach(funcionario -> System.out.println(funcionario.getNome() + ", " + funcionario.getDataNascimento().format(formatter) + ", "
                 + currencyFormatter.format(funcionario.getSalario()) + ", " + funcionario.getFuncao()));
+
+        funcionarios.forEach(funcionario -> {
+            BigDecimal aumento = funcionario.getSalario().multiply(new BigDecimal("0.10"));
+            funcionario.setSalario(funcionario.getSalario().add(aumento));
+        });
 
         
     }
