@@ -77,5 +77,14 @@ public class App {
         funcionarios.stream()
                 .sorted(Comparator.comparing(f -> f.getNome()))
                 .forEach(funcionario -> System.out.println(funcionario.getNome()));
+
+        // Total dos salários dos funcionários
+        BigDecimal totalSalarios = BigDecimal.ZERO;
+        for (Funcionario funcionario : funcionarios) {
+            totalSalarios = totalSalarios.add(funcionario.getSalario());
+        }
+        System.out.println();
+        System.out.println("Total dos salários dos funcionários:");
+        System.out.println(currencyFormatter.format(totalSalarios));
     }
 }
