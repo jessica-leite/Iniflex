@@ -25,9 +25,11 @@ public class App {
 
         funcionarios.removeIf(funcionario -> funcionario.getNome().equals("João"));
 
+        // Formatação de data e moeda e impressão de funcionários
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-
+        System.out.println("Funcionários:");
+        System.out.println();
         funcionarios.forEach(funcionario -> System.out.println(funcionario.getNome() + ", " + funcionario.getDataNascimento().format(formatter) + ", "
                 + currencyFormatter.format(funcionario.getSalario()) + ", " + funcionario.getFuncao()));
 
@@ -36,6 +38,7 @@ public class App {
             funcionario.setSalario(funcionario.getSalario().add(aumento));
         });
 
+        // Agrupando funcionários por cargo
         Map<String, List<Funcionario>> funcionariosPorCargo = funcionarios.stream().collect(Collectors.groupingBy(f -> f.getFuncao()));
         System.out.println();
         System.out.println("Funcionários por cargo:");
@@ -46,5 +49,14 @@ public class App {
             listaFuncionarios.forEach(funcionario -> System.out.println(funcionario.getNome()));
             System.out.println("-------------------");
         });
+
+        // Imprimindo funcionários com aniversário nos meses 10 e 12
+        System.out.println("Funcionários com aniversário em outubro e dezembro:");
+        System.out.println();
+        funcionarios.stream()
+                .filter(funcionario -> funcionario.getDataNascimento().getMonthValue() == 10 ||
+                        funcionario.getDataNascimento().getMonthValue() == 12)
+                .forEach(funcionario -> System.out.println(funcionario.getNome()));
+
     }
 }
