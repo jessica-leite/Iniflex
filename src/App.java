@@ -3,6 +3,7 @@ import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -51,6 +52,7 @@ public class App {
         });
 
         // Imprimindo funcionários com aniversário nos meses 10 e 12
+        System.out.println();
         System.out.println("Funcionários com aniversário em outubro e dezembro:");
         System.out.println();
         funcionarios.stream()
@@ -58,5 +60,22 @@ public class App {
                         funcionario.getDataNascimento().getMonthValue() == 12)
                 .forEach(funcionario -> System.out.println(funcionario.getNome()));
 
+        // Funcionario com maior idade
+        Funcionario funcionarioMaisVelho = funcionarios.stream()
+                .min((f1, f2) -> f1.getDataNascimento().compareTo(f2.getDataNascimento()))
+                .orElse(null);
+        if (funcionarioMaisVelho != null) {
+            System.out.println();
+            System.out.println("Funcionário mais velho:");
+            System.out.println(funcionarioMaisVelho.getNome() + ", " + (LocalDate.now().getYear() - funcionarioMaisVelho.getDataNascimento().getYear()) + " anos");
+        }
+
+        // Funcionários por ordem alfabética
+        System.out.println();
+        System.out.println("Funcionários por ordem alfabética:");
+        System.out.println();
+        funcionarios.stream()
+                .sorted(Comparator.comparing(f -> f.getNome()))
+                .forEach(funcionario -> System.out.println(funcionario.getNome()));
     }
 }
