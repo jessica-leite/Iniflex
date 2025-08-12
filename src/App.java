@@ -3,12 +3,15 @@ import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class App {
     public static void main(String[] args) throws Exception {
 
-        ArrayList<Funcionario> funcionarios = new ArrayList<>();
+        List<Funcionario> funcionarios = new ArrayList<>();
         funcionarios.add(new Funcionario("Maria", LocalDate.of(2020, 10, 18), new BigDecimal("2009.44"), "Operador"));
         funcionarios.add(new Funcionario("João", LocalDate.of(1990, 5, 12), new BigDecimal("2284.38"), "Operador"));
         funcionarios.add(new Funcionario("Caio", LocalDate.of(1961, 5, 2), new BigDecimal("9836.14"), "Coordenador"));
@@ -33,6 +36,15 @@ public class App {
             funcionario.setSalario(funcionario.getSalario().add(aumento));
         });
 
-        
+        Map<String, List<Funcionario>> funcionariosPorCargo = funcionarios.stream().collect(Collectors.groupingBy(f -> f.getFuncao()));
+        System.out.println();
+        System.out.println("Funcionários por cargo:");
+        System.out.println();
+        funcionariosPorCargo.forEach((cargo, listaFuncionarios) -> {
+            System.out.println(cargo);
+            System.out.println();
+            listaFuncionarios.forEach(funcionario -> System.out.println(funcionario.getNome()));
+            System.out.println("-------------------");
+        });
     }
 }
