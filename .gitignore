@@ -1,0 +1,31 @@
+# Compilados Java
+*.class
+
+# Diretórios de build
+/build/
+/out/
+/target/
+
+
+# Configurações de IDEs
+/.idea/
+/*.iml
+*.ipr
+*.iws
+/.classpath
+/.project
+/.settings/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Arquivos temporários
+*.tmp
+*.swp
+
+# Outros
+bin/
