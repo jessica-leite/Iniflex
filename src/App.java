@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -29,11 +30,13 @@ public class App {
         // Formatação de data e moeda e impressão de funcionários
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-        System.out.println("Funcionários:");
-        System.out.println();
-        funcionarios.forEach(funcionario -> System.out.println(funcionario.getNome() + ", " + funcionario.getDataNascimento().format(formatter) + ", "
-                + currencyFormatter.format(funcionario.getSalario()) + ", " + funcionario.getFuncao()));
 
+        System.out.println("**Funcionários**");
+        System.out.println();
+        funcionarios.forEach(funcionario -> System.out.println(funcionario.getNome() + " - " + funcionario.getDataNascimento().format(formatter) + " - "
+                + currencyFormatter.format(funcionario.getSalario()) + " - " + funcionario.getFuncao()));
+
+        //Aumento de 10% nos salários
         funcionarios.forEach(funcionario -> {
             BigDecimal aumento = funcionario.getSalario().multiply(new BigDecimal("0.10"));
             funcionario.setSalario(funcionario.getSalario().add(aumento));
@@ -42,18 +45,18 @@ public class App {
         // Agrupando funcionários por cargo
         Map<String, List<Funcionario>> funcionariosPorCargo = funcionarios.stream().collect(Collectors.groupingBy(f -> f.getFuncao()));
         System.out.println();
-        System.out.println("Funcionários por cargo:");
+        System.out.println("**Funcionários por cargo**");
         System.out.println();
         funcionariosPorCargo.forEach((cargo, listaFuncionarios) -> {
-            System.out.println(cargo);
+            System.out.println("- " + cargo);
             System.out.println();
             listaFuncionarios.forEach(funcionario -> System.out.println(funcionario.getNome()));
-            System.out.println("-------------------");
+            System.out.println();
         });
 
         // Imprimindo funcionários com aniversário nos meses 10 e 12
         System.out.println();
-        System.out.println("Funcionários com aniversário em outubro e dezembro:");
+        System.out.println("**Funcionários com aniversário em outubro e dezembro**");
         System.out.println();
         funcionarios.stream()
                 .filter(funcionario -> funcionario.getDataNascimento().getMonthValue() == 10 ||
@@ -66,13 +69,13 @@ public class App {
                 .orElse(null);
         if (funcionarioMaisVelho != null) {
             System.out.println();
-            System.out.println("Funcionário mais velho:");
+            System.out.println("**Funcionário mais velho**");
             System.out.println(funcionarioMaisVelho.getNome() + ", " + (LocalDate.now().getYear() - funcionarioMaisVelho.getDataNascimento().getYear()) + " anos");
         }
 
         // Funcionários por ordem alfabética
         System.out.println();
-        System.out.println("Funcionários por ordem alfabética:");
+        System.out.println("**Funcionários por ordem alfabética**");
         System.out.println();
         funcionarios.stream()
                 .sorted(Comparator.comparing(f -> f.getNome()))
@@ -84,7 +87,17 @@ public class App {
             totalSalarios = totalSalarios.add(funcionario.getSalario());
         }
         System.out.println();
-        System.out.println("Total dos salários dos funcionários:");
+        System.out.println("**Total dos salários dos funcionários**");
         System.out.println(currencyFormatter.format(totalSalarios));
+
+        //Quantidade de salários mínimos de cada funcionário
+        System.out.println();
+        System.out.println("**Quantidade de salários mínimos de cada funcionário**");
+        System.out.println();
+        BigDecimal salarioMinimo = new BigDecimal("1212.00");
+        funcionarios.forEach(funcionario -> {
+            BigDecimal quantidadeSalariosMinimos = funcionario.getSalario().divide(salarioMinimo, 2, RoundingMode.HALF_EVEN);
+            System.out.println(funcionario.getNome() + " - " + quantidadeSalariosMinimos + " salários mínimos.");
+        });
     }
 }
